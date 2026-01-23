@@ -9,4 +9,7 @@ public interface Radio {
     void guardarEmisora(int boton);
     void cargarEmisora(int boton);
 
+    boolean isEncendido();
+    boolean isFM();
+    double getEmisoraActual();
 }
