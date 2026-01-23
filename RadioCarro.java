@@ -1,23 +1,26 @@
+package radio;
+
 public class RadioCarro implements Radio {
 
     private boolean encendido;
     private boolean esFM;
-
-    private double estacionFM;
-    private int estacionAM;
+    private double emisoraActual;
 
     private double[] botonesFM;
-    private int[] botonesAM;
+    private double[] botonesAM;
 
     public RadioCarro() {
         encendido = false;
         esFM = true;
-
-        estacionFM = 87.9;
-        estacionAM = 530;
+        emisoraActual = 87.9;
 
         botonesFM = new double[12];
-        botonesAM = new int[12];
+        botonesAM = new double[12];
+
+        for (int i = 0; i < 12; i++) {
+            botonesFM[i] = 87.9;
+            botonesAM[i] = 530;
+        }
     }
 
     @Override
@@ -31,57 +34,58 @@ public class RadioCarro implements Radio {
     }
 
     @Override
-    public void cambiarFM() {
-        esFM = true;
+    public void cambiarAMFM() {
+        esFM = !esFM;
+        emisoraActual = esFM ? 87.9 : 530;
     }
 
     @Override
-    public void cambiarAM() {
-        esFM = false;
-    }
-
-    @Override
-    public void avanzarEstacion() {
-        if (!encendido) {
-            return;
-        }
+    public void avanzarEmisora() {
+        if (!encendido) return;
 
         if (esFM) {
-            estacionFM += 0.2;
-            if (estacionFM > 107.9) {
-                estacionFM = 87.9;
+            emisoraActual += 0.2;
+            if (emisoraActual > 107.9) {
+                emisoraActual = 87.9;
             }
         } else {
-            estacionAM += 10;
-            if (estacionAM > 1610) {
-                estacionAM = 530;
+            emisoraActual += 10;
+            if (emisoraActual > 1610) {
+                emisoraActual = 530;
             }
         }
     }
 
     @Override
-    public void guardarEstacion(int numeroBoton) {
-        if (!encendido || numeroBoton < 1 || numeroBoton > 12) {
-            return;
-        }
+    public void guardarEmisora(int boton) {
+        if (boton < 1 || boton > 12) return;
 
         if (esFM) {
-            botonesFM[numeroBoton - 1] = estacionFM;
+            botonesFM[boton - 1] = emisoraActual;
         } else {
-            botonesAM[numeroBoton - 1] = estacionAM;
+            botonesAM[boton - 1] = emisoraActual;
         }
     }
 
     @Override
-    public void cargarEstacion(int numeroBoton) {
-        if (!encendido || numeroBoton < 1 || numeroBoton > 12) {
-            return;
-        }
+    public void cargarEmisora(int boton) {
+        if (boton < 1 || boton > 12) return;
 
-        if (esFM) {
-            estacionFM = botonesFM[numeroBoton - 1];
-        } else {
-            estacionAM = botonesAM[numeroBoton - 1];
-        }
+        emisoraActual = esFM ? botonesFM[boton - 1] : botonesAM[boton - 1];
+    }
+
+    @Override
+    public boolean isEncendido() {
+        return encendido;
+    }
+
+    @Override
+    public boolean isFM() {
+        return esFM;
+    }
+
+    @Override
+    public double getEmisoraActual() {
+        return emisoraActual;
     }
 }
