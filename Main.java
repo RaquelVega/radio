@@ -9,15 +9,9 @@ import java.util.Scanner;
  */
 public class Main {
 
-    /**
-     * Método principal que ejecuta el programa.
-     * 
-     * @param args argumentos de línea de comandos (no utilizados)
-     */
     public static void main(String[] args) {
-        // Crear instancia del radio - cambiar esta línea para usar otra implementación
+
         Radio miRadio = new RadioCarro();
-        
         Scanner scanner = new Scanner(System.in);
         boolean salir = false;
 
@@ -26,12 +20,14 @@ public class Main {
         System.out.println("=================================\n");
 
         while (!salir) {
+
             mostrarMenu(miRadio);
-            
+
             System.out.print("\nSeleccione una opción: ");
             String opcion = scanner.nextLine().trim();
 
             switch (opcion) {
+
                 case "1":
                     miRadio.prenderRadio();
                     System.out.println("\n✓ Radio encendido");
@@ -39,15 +35,12 @@ public class Main {
 
                 case "2":
                     if (verificarEncendido(miRadio)) {
-                        if (miRadio instanceof RadioCarro) {
-                            RadioCarro radio = (RadioCarro) miRadio;
-                            if (radio.isEsFM()) {
-                                miRadio.cambiarAM();
-                                System.out.println("\n✓ Cambiado a AM");
-                            } else {
-                                miRadio.cambiarFM();
-                                System.out.println("\n✓ Cambiado a FM");
-                            }
+                        if (miRadio.esFM()) {
+                            miRadio.cambiarAM();
+                            System.out.println("\n✓ Cambiado a AM");
+                        } else {
+                            miRadio.cambiarFM();
+                            System.out.println("\n✓ Cambiado a FM");
                         }
                     }
                     break;
@@ -116,19 +109,9 @@ public class Main {
         scanner.close();
     }
 
-    /**
-     * Muestra el menú principal y el estado actual del radio.
-     * 
-     * @param radio instancia del radio a mostrar
-     */
     private static void mostrarMenu(Radio radio) {
         System.out.println("\n---------------------------------");
-        
-        if (radio instanceof RadioCarro) {
-            RadioCarro radioCarro = (RadioCarro) radio;
-            System.out.println("Estado: " + radioCarro.getEstado());
-        }
-        
+        System.out.println("Estado: " + radio.getEstado());
         System.out.println("---------------------------------");
         System.out.println("1. Prender el radio");
         System.out.println("2. Cambiar de AM a FM (o viceversa)");
@@ -140,19 +123,10 @@ public class Main {
         System.out.println("---------------------------------");
     }
 
-    /**
-     * Verifica si el radio está encendido antes de realizar operaciones.
-     * 
-     * @param radio instancia del radio a verificar
-     * @return true si está encendido, false en caso contrario
-     */
     private static boolean verificarEncendido(Radio radio) {
-        if (radio instanceof RadioCarro) {
-            RadioCarro radioCarro = (RadioCarro) radio;
-            if (!radioCarro.isEncendido()) {
-                System.out.println("\n✗ El radio está apagado. Enciéndalo primero.");
-                return false;
-            }
+        if (!radio.estaEncendido()) {
+            System.out.println("\n✗ El radio está apagado. Enciéndalo primero.");
+            return false;
         }
         return true;
     }
