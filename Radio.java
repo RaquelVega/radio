@@ -46,5 +46,20 @@ public interface Radio {
      * Cambia el radio a modo AM.
      */
     void cambiarAM();
+    /**
+ * Indica si el radio está encendido.
+ */
+boolean estaEncendido();
+
+/**
+ * Indica si el radio está en modo FM.
+ */
+boolean esFM();
+
+/**
+ * Devuelve el estado actual del radio en texto.
+ */
+String getEstado();
+
 }
 
